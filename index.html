@@ -52,7 +52,7 @@
 
     <!-- Navbar / Tab Switcher -->
     <div class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="font-bold text-slate-800 flex items-center gap-2">
                 <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white">
                     <i data-lucide="umbrella" class="w-5 h-5"></i>
@@ -60,11 +60,17 @@
                 <span class="hidden sm:inline">The Skills Umbrella</span>
             </div>
             
-            <div class="flex bg-slate-100 p-1 rounded-lg">
-                <button onclick="app.switchView('map')" id="tab-map" class="px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 bg-white shadow-sm text-slate-800">
+            <div class="flex bg-slate-100 p-1 rounded-lg overflow-x-auto">
+                <button onclick="app.switchView('map')" id="tab-map" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 bg-white shadow-sm text-slate-800 whitespace-nowrap">
                     <i data-lucide="map" class="w-4 h-4"></i> Transferrable Skills
                 </button>
-                <button onclick="app.switchView('builder')" id="tab-builder" class="px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700">
+                <button onclick="app.switchView('dept')" id="tab-dept" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap">
+                    <i data-lucide="users" class="w-4 h-4"></i> Dept Skills
+                </button>
+                <button onclick="app.switchView('course')" id="tab-course" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap">
+                    <i data-lucide="book-open" class="w-4 h-4"></i> Course Skills
+                </button>
+                <button onclick="app.switchView('builder')" id="tab-builder" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap">
                     <i data-lucide="hammer" class="w-4 h-4"></i> Skill Builder
                 </button>
             </div>
@@ -130,138 +136,280 @@
         </main>
     </div>
 
-    <!-- VIEW 2: SKILL BUILDER TOOL -->
+    <!-- VIEW 2: DEPARTMENT SKILLS -->
+    <div id="view-dept" class="w-full flex-grow hidden max-w-6xl mx-auto px-4 py-8">
+        <!-- Dynamic Content -->
+    </div>
+
+    <!-- VIEW 3: COURSE SKILLS -->
+    <div id="view-course" class="w-full flex-grow hidden max-w-6xl mx-auto px-4 py-8">
+        <!-- Dynamic Content -->
+    </div>
+
+    <!-- VIEW 4: SKILL BUILDER TOOL (Standalone) -->
     <div id="view-builder" class="w-full flex-grow hidden max-w-6xl mx-auto px-4 py-8">
-        
-        <header class="mb-8">
-            <h1 class="text-3xl font-extrabold text-slate-900">Skill Construction Workshop</h1>
-            <p class="text-slate-600">Draft essential skills using the 5-step scaffolding method. Tag by domain and save to your local library.</p>
-        </header>
-
-        <div class="grid lg:grid-cols-12 gap-8 relative">
-            
-            <!-- LEFT COLUMN: The Form (8 cols) -->
-            <div class="lg:col-span-7 space-y-8">
-                
-                <!-- Step 0: Bucket Selection -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Target Domain</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <button onclick="builder.setBucket(1)" id="btn-bucket-1" class="p-3 rounded-lg border-2 text-sm font-bold transition-all flex items-center justify-center gap-2">Inquiry</button>
-                        <button onclick="builder.setBucket(2)" id="btn-bucket-2" class="p-3 rounded-lg border-2 text-sm font-bold transition-all flex items-center justify-center gap-2">Rhetoric</button>
-                        <button onclick="builder.setBucket(3)" id="btn-bucket-3" class="p-3 rounded-lg border-2 text-sm font-bold transition-all flex items-center justify-center gap-2">Logic</button>
-                        <button onclick="builder.setBucket(4)" id="btn-bucket-4" class="p-3 rounded-lg border-2 text-sm font-bold transition-all flex items-center justify-center gap-2">Agency</button>
-                    </div>
-                </div>
-
-                <!-- Step 1: Verb -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-blue-300 transition-colors">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
-                    <div class="flex justify-between items-baseline mb-2">
-                        <label class="font-bold text-lg text-slate-800">Step 1: Action Verb</label>
-                        <span class="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-1 rounded">Focus Question: What will students do?</span>
-                    </div>
-                    <input type="text" id="input-verb" oninput="builder.updatePreview()" placeholder="e.g., Analyze, Evaluate..." class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none mb-3 font-semibold text-lg text-blue-700">
-                    
-                    <p class="text-sm text-slate-500 mt-2">Example: <span class="font-bold text-blue-700 bg-blue-50 px-1 rounded">Analyze</span> the causes of the American Revolution using primary sources.</p>
-                </div>
-
-                <!-- Step 2: Content -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-indigo-300 transition-colors">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
-                    <div class="flex justify-between items-baseline mb-2">
-                        <label class="font-bold text-lg text-slate-800">Step 2: Content/Skill</label>
-                        <span class="text-xs font-bold text-indigo-500 bg-indigo-50 px-2 py-1 rounded">What specific content?</span>
-                    </div>
-                    <input type="text" id="input-content" oninput="builder.updatePreview()" placeholder="e.g., the central theme..." class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-3 font-semibold text-lg text-indigo-700">
-                    
-                    <p class="text-sm text-slate-500 mt-2">Example: Calculate <span class="font-bold text-indigo-700 bg-indigo-50 px-1 rounded">the velocity of an object</span> given its displacement and time.</p>
-                </div>
-
-                <!-- Step 3: Context -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-purple-300 transition-colors">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
-                    <div class="flex justify-between items-baseline mb-2">
-                        <label class="font-bold text-lg text-slate-800">Step 3: Context/Condition</label>
-                        <span class="text-xs font-bold text-purple-500 bg-purple-50 px-2 py-1 rounded">With what tools/conditions?</span>
-                    </div>
-                    <input type="text" id="input-context" oninput="builder.updatePreview()" placeholder="e.g., using digital databases..." class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none mb-3 font-semibold text-lg text-purple-700">
-                    
-                    <p class="text-sm text-slate-500 mt-2">Example: Compose a sonnet <span class="font-bold text-purple-700 bg-purple-50 px-1 rounded">following the Petrarchan rhyme scheme.</span></p>
-                </div>
-
-                <!-- Step 4: Depth -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-emerald-300 transition-colors">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
-                    <div class="flex justify-between items-baseline mb-2">
-                        <label class="font-bold text-lg text-slate-800">Step 4: Depth/Complexity</label>
-                        <span class="text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded">To what extent?</span>
-                    </div>
-                    <input type="text" id="input-depth" oninput="builder.updatePreview()" placeholder="e.g., to form a nuanced argument..." class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none mb-3 font-semibold text-lg text-emerald-700">
-                    
-                    <p class="text-sm text-slate-500 mt-2">Example: Debug a Python script <span class="font-bold text-emerald-700 bg-emerald-50 px-1 rounded">identifying and correcting syntax errors independently.</span></p>
-                </div>
-
-            </div>
-
-            <!-- RIGHT COLUMN: Preview & Save (4 cols) -->
-            <div class="lg:col-span-5">
-                <div class="sticky top-24 space-y-6">
-                    
-                    <!-- Preview Card -->
-                    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl">
-                        <div class="flex items-center gap-2 mb-4 text-slate-400">
-                            <i data-lucide="eye" class="w-5 h-5"></i>
-                            <span class="uppercase tracking-widest text-xs font-bold">Live Draft</span>
-                        </div>
-                        
-                        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 min-h-[160px] flex items-center justify-center text-center">
-                            <p id="preview-text" class="text-xl md:text-2xl font-serif leading-relaxed italic text-slate-400">
-                                Start typing on the left to build your skill statement...
-                            </p>
-                        </div>
-
-                        <div class="mt-6 flex gap-3">
-                            <button onclick="builder.saveSkill()" class="flex-1 bg-white text-slate-900 hover:bg-slate-200 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                                <i data-lucide="save" class="w-5 h-5"></i> Save to Browser
-                            </button>
-                            <button onclick="builder.clearForm()" class="px-4 py-3 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 transition-colors">
-                                <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Saved List -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                        <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-4">
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-bold text-slate-800">Saved Skills</h3>
-                                <span id="saved-count" class="bg-slate-100 text-slate-500 text-xs px-2 py-1 rounded-full">0</span>
-                            </div>
-                            <button id="btn-copy" onclick="builder.copyAllSaved()" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors">
-                                <i data-lucide="copy" class="w-3 h-3"></i> Copy All
-                            </button>
-                        </div>
-
-                        <div id="saved-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
-                            <!-- Saved items go here -->
-                            <div class="text-center py-8 text-slate-400 text-sm italic">
-                                No skills saved yet.
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-slate-100 text-center">
-                            <button onclick="builder.clearAllSaved()" class="text-xs text-red-400 hover:text-red-600 font-medium">Clear All Saved Data</button>
-                        </div>
-                    </div>
-                
-                </div>
-            </div>
-        </div>
+        <!-- Builder is injected here via JS -->
     </div>
 
 
     <script>
+        window.builders = {}; // Initialize global registry for SkillBuilder instances
+
         // --- DATA & CONFIG ---
+        const departmentData = [
+            {
+                id: 1,
+                title: "Inquiry & Information",
+                focus: "Finding, filtering, and ethically using information.",
+                icon: "book-open",
+                color: "bg-cyan-500",
+                textClass: "text-cyan-500",
+                borderColor: "border-cyan-500",
+                lightColor: "bg-cyan-50",
+                textColor: "text-cyan-700",
+                skills: [
+                    { name: "Strategic Research (Search & Discovery)", objective: "Students will be able to design and execute multi-step research methodologies to locate niche primary sources and identify gaps in current scholarship." },
+                    { name: "Critical Media Literacy (Evaluation)", objective: "Students will be able to evaluate the validity, bias, and purpose of information sources, distinguishing between human and AI-generated content to assess epistemological validity." },
+                    { name: "Information Ethics (Integrity)", objective: "Students will be able to demonstrate full academic integrity by tracing the \"lineage of ideas,\" creating annotated bibliographies, and managing digital privacy and intellectual property." },
+                    { name: "Knowledge Synthesis (Curation)", objective: "Students will be able to synthesize conflicting information from diverse data points to construct a cohesive understanding of a complex topic." }
+                ]
+            },
+            {
+                id: 2,
+                title: "Rhetoric & Communication",
+                focus: "Expressing ideas and engaging in community.",
+                icon: "users",
+                color: "bg-rose-500",
+                textClass: "text-rose-500",
+                borderColor: "border-rose-500",
+                lightColor: "bg-rose-50",
+                textColor: "text-rose-700",
+                skills: [
+                    { name: "Collaborative Discourse (Spoken)", objective: "Students will be able to facilitate community dialogue and Socratic inquiry, prioritizing active listening and the ability to disagree with an idea rather than a person." },
+                    { name: "Written Argumentation (Written)", objective: "Students will be able to construct complex arguments and professional-grade communication characterized by original voice, clear claims, and synthesized evidence." },
+                    { name: "Rhetorical Agility (Adaptability)", objective: "Students will be able to analyze rhetorical strategies (Ethos/Pathos) and adapt their tone, medium, and structure to persuade distinct real-world audiences." },
+                    { name: "Conflict Mediation (Navigation)", objective: "Students will be able to mediate intellectual conflict and advocate for opposing viewpoints to reach consensus or deepen collective understanding." }
+                ]
+            },
+            {
+                id: 3,
+                title: "Logic & Systems",
+                focus: "Reasoning, connecting, and solving.",
+                icon: "cpu",
+                color: "bg-amber-500",
+                textClass: "text-amber-500",
+                borderColor: "border-amber-500",
+                lightColor: "bg-amber-50",
+                textColor: "text-amber-700",
+                skills: [
+                    { name: "Analytical Decomposition (Breakdown)", objective: "Students will be able to deconstruct multi-step problems into component parts, distinguishing between correlation and causation to isolate root issues." },
+                    { name: "Systems Thinking (Holistic)", objective: "Students will be able to evaluate how changing a single variable impacts a complex whole (e.g., ecosystem, economy) and identify non-obvious patterns within a system." },
+                    { name: "Algorithmic Design (Process)", objective: "Students will be able to design logical rules, algorithms, or \"If/Then\" models to predict outcomes and solve novel problems without prompting." },
+                    { name: "Interdisciplinary Transfer (Application)", objective: "Students will be able to transfer \"mental models\" (e.g., entropy, leverage, feedback loops) from one discipline to effectively solve a problem in an unrelated context." }
+                ]
+            },
+            {
+                id: 4,
+                title: "Agency & Self",
+                focus: "Managing the self and the learning process.",
+                icon: "brain",
+                color: "bg-violet-500",
+                textClass: "text-violet-500",
+                borderColor: "border-violet-500",
+                lightColor: "bg-violet-50",
+                textColor: "text-violet-700",
+                skills: [
+                    { name: "Executive Management (Logistics)", objective: "Students will be able to independently regulate long-term projects, manage materials, and utilize planning tools to meet deadlines with minimal external checks." },
+                    { name: "Intellectual Resilience (Grit)", objective: "Students will be able to identify stress triggers and employ \"bounce back\" strategies to persist through academic difficulty and failure." },
+                    { name: "Metacognitive Reflection (Self-Knowledge)", objective: "Students will be able to analyze their own learning profile and proactively adjust study habits and strategies based on performance outcomes." },
+                    { name: "Courageous Advocacy (Voice)", objective: "Students will be able to demonstrate \"Intellectual Courage\" by risking being wrong in public and proactively seeking feedback to close learning gaps." }
+                ]
+            }
+        ];
+
+        const courseData = [
+            {
+                id: 1,
+                title: "Inquiry & Information Matrix",
+                trajectory: "From finding facts to constructing new knowledge.",
+                icon: "book-open",
+                color: "bg-cyan-500",
+                textClass: "text-cyan-500",
+                borderColor: "border-cyan-500",
+                lightColor: "bg-cyan-50",
+                textColor: "text-cyan-700",
+                skills: [
+                    {
+                        name: "Strategic Research (Search & Discovery)",
+                        levels: [
+                            "Distinguish between a \"searchable fact\" and a \"complex question.\" Use basic Boolean operators (AND, OR) to construct multi-step queries.",
+                            "Navigate academic databases (e.g., JSTOR), filter results by source type, and use advanced syntax (truncation, wildcards) and cross-referencing to verify data.",
+                            "Design independent research methodologies, identify specific gaps in current scholarship, and locate obscure or niche primary sources to support a novel thesis."
+                        ]
+                    },
+                    {
+                        name: "Critical Media Literacy (Evaluation)",
+                        levels: [
+                            "Identify simple bias (positive/negative language), distinguish between human vs. AI-generated interactions, and evaluate a source's basic purpose (to educate vs. to sell).",
+                            "Apply the full SIFT or CRAAP test, verify AI summaries against original texts to check for hallucinations, and analyze the methodology of cited studies.",
+                            "Evaluate the credibility of raw data sets, use AI tools as a transparent collaborator (not a replacement), and assess the epistemological validity of conflicting truth claims."
+                        ]
+                    },
+                    {
+                        name: "Information Ethics (Integrity)",
+                        levels: [
+                            "List sources in standard bibliographies, clearly differentiate between summarizing, paraphrasing, and quoting, and understand the basic definition of plagiarism.",
+                            "Create annotated bibliographies that evaluate source relevance, integrate quotes smoothly into syntax, and understand the basics of intellectual property and fair use.",
+                            "Trace the \"lineage of ideas\" (who cited whom), manage personal digital privacy and data rights, and demonstrate full autonomy in academic integrity without external prompting."
+                        ]
+                    },
+                    {
+                        name: "Knowledge Synthesis (Curation)",
+                        levels: [
+                            "Group information from two different sources that agree on a topic and identify one point where they disagree or diverge.",
+                            "Synthesize conflicting sources to provide a \"landscape view\" of a debate, identifying why sources might disagree (e.g., date of publication, perspective).",
+                            "Construct a cohesive understanding of a complex topic by weaving together disparate data points, identifying outliers, and reconciling contradictions into a unified thesis."
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Rhetoric & Communication Matrix",
+                trajectory: "From participating in a group to leading the community.",
+                icon: "users",
+                color: "bg-rose-500",
+                textClass: "text-rose-500",
+                borderColor: "border-rose-500",
+                lightColor: "bg-rose-50",
+                textColor: "text-rose-700",
+                skills: [
+                    {
+                        name: "Collaborative Discourse (Spoken)",
+                        levels: [
+                            "Demonstrate active listening (\"I heard you say...\"), facilitate small group roles (timekeeper, scribe), and disagree with the idea rather than the person.",
+                            "Participate effectively in Socratic Seminars, use strategic questioning to deepen the dialogue, and advocate for opposing viewpoints to test their strength.",
+                            "Lead community dialogues on sensitive topics, ensure equitable participation from all voices, and synthesize the group's collective progress in real-time."
+                        ]
+                    },
+                    {
+                        name: "Written Argumentation (Written)",
+                        levels: [
+                            "Write clear claims supported by specific evidence, structure distinct paragraphs, and compose multi-paragraph essays with a defensible thesis.",
+                            "Synthesize conflicting sources into a coherent argument, analyze rhetorical strategies (Ethos/Pathos/Logos) in others' work, and construct complex, multi-faceted arguments.",
+                            "Experiment with genre and form, develop a distinct and original voice, and produce professional-grade communication designed for real-world impact/publication."
+                        ]
+                    },
+                    {
+                        name: "Rhetorical Agility (Adaptability)",
+                        levels: [
+                            "Identify the intended audience of a message and adjust basic tone (formal vs. informal) to match the setting.",
+                            "Tailor evidence selection based on the audience's values and anticipate counter-arguments specific to that demographic.",
+                            "Demonstrate full \"Rhetorical Agility\"—shifting syntax, vocabulary, and delivery style seamlessly between distinct audiences (e.g., peers vs. administration vs. parents)."
+                        ]
+                    },
+                    {
+                        name: "Conflict Mediation (Navigation)",
+                        levels: [
+                            "Use \"I\" statements to express disagreement and identify when a conversation has become emotional rather than intellectual.",
+                            "De-escalate tension in small groups by summarizing the conflict neutrally and identifying the core point of divergence.",
+                            "Mediate conflict between others, guiding them toward consensus or a \"agree to disagree\" resolution, and advocate for the \"minority view\" to prevent groupthink."
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Logic & Systems Matrix",
+                trajectory: "From following steps to designing systems.",
+                icon: "cpu",
+                color: "bg-amber-500",
+                textClass: "text-amber-500",
+                borderColor: "border-amber-500",
+                lightColor: "bg-amber-50",
+                textColor: "text-amber-700",
+                skills: [
+                    {
+                        name: "Analytical Decomposition (Breakdown)",
+                        levels: [
+                            "Break large tasks into checklists, distinguish correlation (things happening together) vs. causation (one thing causing another), and deconstruct multi-step word problems.",
+                            "Use logic models (If/Then statements) to predict outcomes, analyze simple data sets for outliers, and identify logical fallacies in arguments.",
+                            "Analyze complex data trends over time, design rules/heuristics for novel problems where no instructions exist, and evaluate the soundness of logical systems."
+                        ]
+                    },
+                    {
+                        name: "Systems Thinking (Holistic)",
+                        levels: [
+                            "Identify simple patterns (A repeats B) and deconstruct a visible object or problem into its component parts without prompting.",
+                            "Map how changing one variable affects a complex whole (e.g., \"How does removing wolves change the river?\"), and visualize feedback loops.",
+                            "Evaluate \"second-order consequences\" (the effect of the effect) and optimize a system to improve its output or sustainability."
+                        ]
+                    },
+                    {
+                        name: "Algorithmic Design (Process)",
+                        levels: [
+                            "Follow a complex algorithm or set of instructions accurately and identify where a process \"broke\" or failed.",
+                            "Design simple algorithms or flowcharts to solve a recurring problem and debug a process that is producing inconsistent results.",
+                            "Create abstract rules or models that can be applied to varied scenarios (automation) and audit algorithms for bias or inefficiency."
+                        ]
+                    },
+                    {
+                        name: "Interdisciplinary Transfer (Application)",
+                        levels: [
+                            "Apply a concept learned in one context (e.g., a math formula) to a similar context (e.g., a science word problem) with prompting.",
+                            "Recognize when a problem in one class shares the structure of a problem in another class (e.g., \"This historical cycle is like a biological lifecycle\").",
+                            "Transfer abstract \"mental models\" (e.g., entropy, leverage, pareto principle) from one discipline to solve a novel problem in a completely unrelated field."
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "Agency & Self Matrix",
+                trajectory: "From compliance to autonomy.",
+                icon: "brain",
+                color: "bg-violet-500",
+                textClass: "text-violet-500",
+                borderColor: "border-violet-500",
+                lightColor: "bg-violet-50",
+                textColor: "text-violet-700",
+                skills: [
+                    {
+                        name: "Executive Management (Logistics)",
+                        levels: [
+                            "Use planners (digital or physical) to track homework, utilize checklists for daily tasks, and keep materials organized.",
+                            "Set semester-long goals, break long-term projects into intermediate deadlines independently, and manage time buffers for unexpected work.",
+                            "Self-regulate long-term projects with minimal checks, manage competing priorities (triage), and transition to adult-level independence in workflow."
+                        ]
+                    },
+                    {
+                        name: "Intellectual Resilience (Grit)",
+                        levels: [
+                            "Identify personal stress triggers (e.g., \"I panic when I see a timer\") and use pre-planned \"bounce back\" strategies to return to focus.",
+                            "Distinguish between \"good stress\" (growth) and \"bad stress\" (anxiety), and persist through multiple drafts or iterations of work.",
+                            "View failure as data; analyze why a failure occurred without emotional collapse and implement a new strategy immediately."
+                        ]
+                    },
+                    {
+                        name: "Metacognitive Reflection (Self-Knowledge)",
+                        levels: [
+                            "Articulate what they know vs. what they don't know, and identify their preferred working environment (quiet vs. loud).",
+                            "Adjust study habits based on results (e.g., \"Flashcards didn't work, I will try mapping\"), and identify personal cognitive biases.",
+                            "Understand their own learning profile deeply (strengths/weaknesses) and design their own learning environment to maximize output."
+                        ]
+                    },
+                    {
+                        name: "Courageous Advocacy (Voice)",
+                        levels: [
+                            "Ask for help specifically (not just \"I don't get it,\" but \"I don't understand step 2\") and ensure quiet voices are heard in small groups.",
+                            "Seek feedback proactively before a deadline and advocate for their own academic needs (e.g., asking for an extension with a valid plan).",
+                            "Risk being wrong in public (\"Intellectual Courage\") to advance the conversation and challenge majority opinions when supported by evidence."
+                        ]
+                    }
+                ]
+            }
+        ];
+
         const categories = [
             {
                 id: 1,
@@ -407,33 +555,261 @@
 
         // --- APP STATE ---
         const app = {
-            activeSlice: null,
+            activeSlice: null, // For Map
+            activeDeptSlice: null, // For Dept View
+            activeCourseSlice: null, // For Course View
+            activeCourseLevel: 1,
             activeLevel: 1,
-            view: 'map', // 'map' or 'builder'
+            view: 'map', // 'map', 'dept', 'course', 'builder'
 
             switchView: function(viewName) {
                 this.view = viewName;
-                document.getElementById('view-map').classList.toggle('hidden', viewName !== 'map');
-                document.getElementById('view-builder').classList.toggle('hidden', viewName !== 'builder');
-                document.getElementById('view-builder').classList.toggle('block', viewName === 'builder');
+                const views = ['map', 'dept', 'course', 'builder'];
                 
-                // Update Tab Styles
-                const mapBtn = document.getElementById('tab-map');
-                const buildBtn = document.getElementById('tab-builder');
-                
-                if(viewName === 'map') {
-                    mapBtn.className = "px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 bg-white shadow-sm text-slate-800";
-                    buildBtn.className = "px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700";
-                } else {
-                    buildBtn.className = "px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 bg-white shadow-sm text-slate-800";
-                    mapBtn.className = "px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700";
-                    builder.init();
+                views.forEach(v => {
+                    const el = document.getElementById(`view-${v}`);
+                    if(el) {
+                        el.classList.toggle('hidden', viewName !== v);
+                        if(viewName === v) {
+                           if(v === 'builder') el.classList.add('block'); // ensure block for builder
+                        }
+                    }
+
+                    const btn = document.getElementById(`tab-${v}`);
+                    if(btn) {
+                        if (viewName === v) {
+                            btn.className = "px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 bg-white shadow-sm text-slate-800 whitespace-nowrap";
+                        } else {
+                            btn.className = "px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap";
+                        }
+                    }
+                });
+
+                // Init builders if needed
+                if(viewName === 'builder' && !window.builders['main']) {
+                    new SkillBuilder('main', 'mySkills', 'view-builder').init();
+                }
+                if(viewName === 'dept') {
+                    this.renderDeptView();
+                }
+                if(viewName === 'course') {
+                    this.renderCourseView();
                 }
             },
 
             setActiveSlice: function(id) {
                 this.activeSlice = (this.activeSlice === id) ? null : id;
                 this.renderMap();
+            },
+
+            setActiveDeptSlice: function(id) {
+                this.activeDeptSlice = (this.activeDeptSlice === id) ? null : id;
+                this.renderDeptView();
+            },
+
+            setActiveCourseSlice: function(id) {
+                this.activeCourseSlice = (this.activeCourseSlice === id) ? null : id;
+                this.renderCourseView();
+            },
+
+            setActiveCourseLevel: function(level) {
+                this.activeCourseLevel = level;
+                this.renderCourseView();
+            },
+
+            renderDeptView: function() {
+                const container = document.getElementById('view-dept');
+                if(!container) return;
+
+                // Initialize builder if not exists (append to end of view)
+                // We will render the content first, then append builder container
+
+                let contentHTML = '';
+
+                // 1. Umbrella/Navigation (Simplified Re-use or Duplicate)
+                // Using a grid layout for categories instead of the SVG to vary it, as requested "discrete part"
+                // Actually prompt says "information organized in a very logical way given the umbrella (have this graphic)"
+                // So I should include the umbrella.
+
+                const activeCat = departmentData.find(c => c.id === this.activeDeptSlice);
+
+                contentHTML += `
+                    <header class="text-center mb-12">
+                         <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Choosing Department Skill</h1>
+                         <p class="text-slate-600">Initial departmental brainstorming for a skill ALL teachers will focus on.</p>
+                    </header>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-12 items-start">
+                        <!-- Left: Umbrella Visualization (Smaller) -->
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                             <div class="relative w-full h-[300px] flex justify-center items-end">
+                                <svg viewBox="0 0 800 600" class="w-full h-full">
+                                    <path d="M 400 380 L 400 520 Q 400 560 360 560 Q 340 560 340 540" fill="none" stroke="#1e293b" stroke-width="12" stroke-linecap="round" />
+                                    ${departmentData.map(cat => `
+                                        <path d="${this.getSlicePath(cat.id)}"
+                                              fill="currentColor"
+                                              class="cursor-pointer transition-all duration-300 ${this.activeDeptSlice === cat.id ? cat.textClass : 'text-slate-300 hover:text-slate-400'}"
+                                              onclick="app.setActiveDeptSlice(${cat.id})" />
+                                    `).join('')}
+                                    <circle cx="400" cy="80" r="8" class="fill-slate-700" />
+                                    <circle cx="400" cy="380" r="12" class="fill-slate-800" />
+                                </svg>
+                                <div class="absolute bottom-0 w-full text-center pointer-events-none">
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Select a Domain</p>
+                                </div>
+                             </div>
+                        </div>
+
+                        <!-- Right: Details -->
+                        <div>
+                             ${!activeCat ? `
+                                <div class="h-full flex flex-col items-center justify-center text-center p-8 bg-slate-100 rounded-3xl border border-slate-200 border-dashed min-h-[300px]">
+                                    <i data-lucide="mouse-pointer-2" class="w-12 h-12 text-slate-300 mb-4"></i>
+                                    <h3 class="text-xl font-bold text-slate-400">Select a domain to explore objectives</h3>
+                                </div>
+                             ` : `
+                                <div class="animate-enter">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="p-3 rounded-xl ${activeCat.lightColor} ${activeCat.textColor}">
+                                            <i data-lucide="${activeCat.icon}" class="w-6 h-6"></i>
+                                        </div>
+                                        <div>
+                                            <h2 class="text-2xl font-bold text-slate-900">${activeCat.title}</h2>
+                                            <p class="text-sm text-slate-500 font-medium">${activeCat.focus}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-4">
+                                        ${activeCat.skills.map(skill => `
+                                            <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:border-slate-300 transition-colors">
+                                                <h4 class="font-bold text-slate-800 mb-1">${skill.name}</h4>
+                                                <p class="text-slate-600 text-sm leading-relaxed">${skill.objective}</p>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                             `}
+                        </div>
+                    </div>
+
+                    <div id="dept-builder-container" class="mt-16 pt-16 border-t border-slate-200">
+                        <!-- Builder will be injected here -->
+                    </div>
+                `;
+
+                container.innerHTML = contentHTML;
+                lucide.createIcons();
+
+                // Inject Builder
+                if (!window.builders['dept']) {
+                    new SkillBuilder('dept', 'deptSkills', 'dept-builder-container', true).init();
+                } else {
+                    // Re-render if container was wiped
+                    window.builders['dept'].containerId = 'dept-builder-container';
+                    window.builders['dept'].render();
+                    window.builders['dept'].loadSavedSkills();
+                }
+            },
+
+            renderCourseView: function() {
+                const container = document.getElementById('view-course');
+                if(!container) return;
+
+                const activeCat = courseData.find(c => c.id === this.activeCourseSlice);
+
+                let contentHTML = `
+                    <header class="text-center mb-12">
+                         <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Choosing Course Skill</h1>
+                         <p class="text-slate-600">Explore specific skills at the course/grade level.</p>
+                    </header>
+
+                    <div class="grid md:grid-cols-12 gap-8 mb-12">
+                        <!-- Navigation (Sidebar style) -->
+                        <div class="md:col-span-3 space-y-2">
+                             ${courseData.map(cat => `
+                                <button onclick="app.setActiveCourseSlice(${cat.id})" class="w-full text-left p-4 rounded-xl border transition-all flex items-center gap-3 ${this.activeCourseSlice === cat.id ? `bg-white border-slate-300 shadow-md ring-1 ring-slate-200` : 'bg-slate-50 border-transparent hover:bg-white hover:border-slate-200'}">
+                                    <div class="${cat.textColor}"><i data-lucide="${cat.icon}" class="w-5 h-5"></i></div>
+                                    <span class="font-bold text-sm ${this.activeCourseSlice === cat.id ? 'text-slate-900' : 'text-slate-500'}">${cat.title.replace(' Matrix', '')}</span>
+                                </button>
+                             `).join('')}
+                        </div>
+
+                        <!-- Content -->
+                        <div class="md:col-span-9">
+                            ${!activeCat ? `
+                                <div class="h-full flex flex-col items-center justify-center text-center p-12 bg-white rounded-3xl border border-slate-200 border-dashed min-h-[400px]">
+                                    <div class="bg-slate-50 p-6 rounded-full mb-6">
+                                        <i data-lucide="layers" class="w-12 h-12 text-slate-300"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-slate-400">Select a Matrix to explore levels</h3>
+                                </div>
+                            ` : `
+                                <div class="animate-enter bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                                    <div class="p-8 border-b border-slate-100 ${activeCat.lightColor}">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <i data-lucide="${activeCat.icon}" class="w-6 h-6 ${activeCat.textClass}"></i>
+                                            <h2 class="text-2xl font-bold text-slate-900">${activeCat.title}</h2>
+                                        </div>
+                                        <p class="text-slate-600 font-medium">${activeCat.trajectory}</p>
+                                    </div>
+
+                                    <div class="p-8">
+                                        <div class="flex justify-center mb-8">
+                                            <div class="inline-flex bg-slate-100 p-1 rounded-lg">
+                                                ${[1, 2, 3].map(lvl => `
+                                                    <button onclick="app.setActiveCourseLevel(${lvl})" class="px-4 py-2 rounded-md text-sm font-bold transition-all ${this.activeCourseLevel === lvl ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-400 hover:text-slate-600'}">
+                                                        Level ${lvl} ${lvl===1?'(Foundational)':lvl===2?'(Analytical)':'(Mastery)'}
+                                                    </button>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-8">
+                                            ${activeCat.skills.map(skill => `
+                                                <div>
+                                                    <h4 class="font-bold text-lg text-slate-800 mb-3 flex items-center gap-2">
+                                                        <span class="w-2 h-2 rounded-full ${activeCat.color}"></span>
+                                                        ${skill.name}
+                                                    </h4>
+                                                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 text-slate-700 leading-relaxed relative min-h-[80px]">
+                                                        ${skill.levels[this.activeCourseLevel - 1]}
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+
+                    <div id="course-builder-container" class="mt-16 pt-16 border-t border-slate-200">
+                        <!-- Builder injected here -->
+                    </div>
+                `;
+
+                container.innerHTML = contentHTML;
+                lucide.createIcons();
+
+                 // Inject Builder
+                if (!window.builders['course']) {
+                    new SkillBuilder('course', 'courseSkills', 'course-builder-container', false).init();
+                } else {
+                    window.builders['course'].containerId = 'course-builder-container';
+                    window.builders['course'].render();
+                    window.builders['course'].loadSavedSkills();
+                }
+            },
+
+            getSlicePath: function(id) {
+                // Hardcoded paths from the original SVG to reuse
+                const paths = {
+                    1: "M 400 380 L 100 380 A 300 300 0 0 1 250 120 Z",
+                    2: "M 400 380 L 250 120 A 300 300 0 0 1 400 80 L 400 380 Z",
+                    3: "M 400 380 L 400 80 A 300 300 0 0 1 550 120 L 400 380 Z",
+                    4: "M 400 380 L 550 120 A 300 300 0 0 1 700 380 Z"
+                };
+                return paths[id];
             },
 
             setActiveLevel: function(level) {
@@ -541,38 +917,146 @@
         };
 
         // --- BUILDER LOGIC ---
-        const builder = {
-            currentBucket: 1,
-            
-            init: function() {
-                this.updateBucketStyles();
-                this.loadSavedSkills();
-            },
+        class SkillBuilder {
+            constructor(instanceId, storageKey, containerId, isSimplified = false) {
+                this.instanceId = instanceId;
+                this.storageKey = storageKey;
+                this.containerId = containerId;
+                this.isSimplified = isSimplified;
+                this.currentBucket = 1;
 
-            setBucket: function(id) {
+                // Register in global scope for onclick handlers
+                if (!window.builders) window.builders = {};
+                window.builders[instanceId] = this;
+            }
+
+            init() {
+                this.render();
+                this.loadSavedSkills();
+            }
+
+            render() {
+                const container = document.getElementById(this.containerId);
+                if(!container) return;
+
+                container.innerHTML = `
+                    <header class="mb-8">
+                        <h1 class="text-3xl font-extrabold text-slate-900">${this.isSimplified ? 'Departmental Skill Brainstorming' : 'Skill Construction Workshop'}</h1>
+                        <p class="text-slate-600">${this.isSimplified ? 'Draft department-wide objectives.' : 'Draft essential skills using the 5-step scaffolding method.'} Tag by domain and save to your local library.</p>
+                    </header>
+
+                    <div class="grid lg:grid-cols-12 gap-8 relative">
+                        <!-- LEFT COLUMN: The Form -->
+                        <div class="lg:col-span-7 space-y-8">
+                            <!-- Bucket Selection -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Target Domain</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                   ${categories.map(cat => `
+                                        <button onclick="builders['${this.instanceId}'].setBucket(${cat.id})" id="btn-bucket-${cat.id}-${this.instanceId}" class="p-3 rounded-lg border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 border-slate-100 text-slate-400 bg-white">
+                                            ${cat.title.split(' ')[0]}
+                                        </button>
+                                   `).join('')}
+                                </div>
+                            </div>
+
+                            ${this.renderField('verb', 'Step 1: Action Verb', 'What will students do?', 'e.g., Analyze, Evaluate...', 'blue')}
+                            ${this.renderField('content', 'Step 2: Content/Skill', 'What specific content?', 'e.g., the central theme...', 'indigo')}
+                            ${this.renderField('context', 'Step 3: Context/Condition', 'With what tools/conditions?', 'e.g., using digital databases...', 'purple')}
+                            ${this.renderField('depth', 'Step 4: Depth/Complexity', 'To what extent?', 'e.g., to form a nuanced argument...', 'emerald')}
+
+                        </div>
+
+                        <!-- RIGHT COLUMN: Preview & Save -->
+                        <div class="lg:col-span-5">
+                            <div class="sticky top-24 space-y-6">
+                                <!-- Preview Card -->
+                                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl">
+                                    <div class="flex items-center gap-2 mb-4 text-slate-400">
+                                        <i data-lucide="eye" class="w-5 h-5"></i>
+                                        <span class="uppercase tracking-widest text-xs font-bold">Live Draft</span>
+                                    </div>
+
+                                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 min-h-[160px] flex items-center justify-center text-center">
+                                        <p id="preview-text-${this.instanceId}" class="text-xl md:text-2xl font-serif leading-relaxed italic text-slate-400">
+                                            Start typing on the left to build your skill statement...
+                                        </p>
+                                    </div>
+
+                                    <div class="mt-6 flex gap-3">
+                                        <button onclick="builders['${this.instanceId}'].saveSkill()" class="flex-1 bg-white text-slate-900 hover:bg-slate-200 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                                            <i data-lucide="save" class="w-5 h-5"></i> Save
+                                        </button>
+                                        <button onclick="builders['${this.instanceId}'].clearForm()" class="px-4 py-3 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 transition-colors">
+                                            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Saved List -->
+                                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                                    <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-4">
+                                        <div class="flex items-center gap-2">
+                                            <h3 class="font-bold text-slate-800">Saved Skills</h3>
+                                            <span id="saved-count-${this.instanceId}" class="bg-slate-100 text-slate-500 text-xs px-2 py-1 rounded-full">0</span>
+                                        </div>
+                                        <button id="btn-copy-${this.instanceId}" onclick="builders['${this.instanceId}'].copyAllSaved()" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors">
+                                            <i data-lucide="copy" class="w-3 h-3"></i> Copy All
+                                        </button>
+                                    </div>
+
+                                    <div id="saved-list-${this.instanceId}" class="space-y-3 max-h-[500px] overflow-y-auto pr-2"></div>
+                                    <div class="mt-4 pt-4 border-t border-slate-100 text-center">
+                                        <button onclick="builders['${this.instanceId}'].clearAllSaved()" class="text-xs text-red-400 hover:text-red-600 font-medium">Clear All Saved Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                this.updateBucketStyles();
+                lucide.createIcons();
+            }
+
+            renderField(id, label, badge, placeholder, color) {
+                return `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-${color}-300 transition-colors">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-${color}-500"></div>
+                        <div class="flex justify-between items-baseline mb-2">
+                            <label class="font-bold text-lg text-slate-800">${label}</label>
+                            <span class="text-xs font-bold text-${color}-500 bg-${color}-50 px-2 py-1 rounded">${badge}</span>
+                        </div>
+                        <input type="text" id="input-${id}-${this.instanceId}" oninput="builders['${this.instanceId}'].updatePreview()" placeholder="${placeholder}" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-${color}-500 focus:outline-none mb-3 font-semibold text-lg text-${color}-700">
+                    </div>
+                `;
+            }
+
+            setBucket(id) {
                 this.currentBucket = id;
                 this.updateBucketStyles();
                 this.updatePreview(); 
-            },
+            }
 
-            updateBucketStyles: function() {
+            updateBucketStyles() {
                 categories.forEach(cat => {
-                    const btn = document.getElementById(`btn-bucket-${cat.id}`);
+                    const btn = document.getElementById(`btn-bucket-${cat.id}-${this.instanceId}`);
+                    if(!btn) return;
                     if (cat.id === this.currentBucket) {
                         btn.className = `p-3 rounded-lg border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 ${cat.borderColor} ${cat.lightColor} ${cat.textColor}`;
                     } else {
                         btn.className = `p-3 rounded-lg border-2 border-slate-100 text-slate-400 text-sm font-bold transition-all flex items-center justify-center gap-2 hover:border-slate-300 bg-white`;
                     }
                 });
-            },
+            }
 
-            updatePreview: function() {
-                const v = document.getElementById('input-verb').value.trim();
-                const c = document.getElementById('input-content').value.trim();
-                const ctx = document.getElementById('input-context').value.trim();
-                const d = document.getElementById('input-depth').value.trim();
+            updatePreview() {
+                const v = document.getElementById(`input-verb-${this.instanceId}`).value.trim();
+                const c = document.getElementById(`input-content-${this.instanceId}`).value.trim();
+                const ctx = document.getElementById(`input-context-${this.instanceId}`).value.trim();
+                const d = document.getElementById(`input-depth-${this.instanceId}`).value.trim();
                 
-                const previewEl = document.getElementById('preview-text');
+                const previewEl = document.getElementById(`preview-text-${this.instanceId}`);
                 
                 if (!v && !c && !ctx && !d) {
                     previewEl.innerHTML = "Start typing on the left to build your skill statement...";
@@ -580,7 +1064,6 @@
                     return;
                 }
 
-                // Colorize logic for preview
                 const html = `
                     <span class="text-blue-400 font-semibold">${v || "[Verb]"}</span> 
                     <span class="text-indigo-400 font-semibold">${c || "[Content]"}</span> 
@@ -590,13 +1073,13 @@
                 
                 previewEl.innerHTML = html;
                 previewEl.className = "text-xl md:text-2xl font-serif leading-relaxed text-white";
-            },
+            }
 
-            saveSkill: function() {
-                const v = document.getElementById('input-verb').value.trim();
-                const c = document.getElementById('input-content').value.trim();
-                const ctx = document.getElementById('input-context').value.trim();
-                const d = document.getElementById('input-depth').value.trim();
+            saveSkill() {
+                const v = document.getElementById(`input-verb-${this.instanceId}`).value.trim();
+                const c = document.getElementById(`input-content-${this.instanceId}`).value.trim();
+                const ctx = document.getElementById(`input-context-${this.instanceId}`).value.trim();
+                const d = document.getElementById(`input-depth-${this.instanceId}`).value.trim();
 
                 if (!v || !c) {
                     alert("Please enter at least a Verb and Content/Skill.");
@@ -610,20 +1093,21 @@
                     timestamp: new Date().toLocaleDateString()
                 };
 
-                const saved = JSON.parse(localStorage.getItem('mySkills') || '[]');
+                const saved = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
                 saved.unshift(skill);
-                localStorage.setItem('mySkills', JSON.stringify(saved));
+                localStorage.setItem(this.storageKey, JSON.stringify(saved));
                 
                 this.loadSavedSkills();
                 this.clearForm();
-            },
+            }
 
-            loadSavedSkills: function() {
-                const saved = JSON.parse(localStorage.getItem('mySkills') || '[]');
-                const listEl = document.getElementById('saved-list');
-                const countEl = document.getElementById('saved-count');
+            loadSavedSkills() {
+                const saved = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+                const listEl = document.getElementById(`saved-list-${this.instanceId}`);
+                const countEl = document.getElementById(`saved-count-${this.instanceId}`);
                 
-                countEl.innerText = saved.length;
+                if (countEl) countEl.innerText = saved.length;
+                if (!listEl) return;
 
                 if (saved.length === 0) {
                     listEl.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm italic">No skills saved yet.</div>`;
@@ -634,7 +1118,7 @@
                     const cat = categories.find(c => c.id === s.bucketId) || categories[0];
                     return `
                         <div class="p-4 rounded-xl border-l-4 ${cat.borderColor} bg-slate-50 relative group">
-                            <button onclick="builder.deleteSkill(${s.id})" class="absolute top-2 right-2 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="builders['${this.instanceId}'].deleteSkill(${s.id})" class="absolute top-2 right-2 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                             <span class="text-[10px] font-bold uppercase tracking-widest ${cat.textColor} mb-1 block">${cat.title}</span>
@@ -645,17 +1129,17 @@
                 }).join('');
                 
                 lucide.createIcons();
-            },
+            }
 
-            deleteSkill: function(id) {
-                const saved = JSON.parse(localStorage.getItem('mySkills') || '[]');
+            deleteSkill(id) {
+                const saved = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
                 const updated = saved.filter(s => s.id !== id);
-                localStorage.setItem('mySkills', JSON.stringify(updated));
+                localStorage.setItem(this.storageKey, JSON.stringify(updated));
                 this.loadSavedSkills();
-            },
+            }
             
-            copyAllSaved: function() {
-                const saved = JSON.parse(localStorage.getItem('mySkills') || '[]');
+            copyAllSaved() {
+                const saved = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
                 if (saved.length === 0) return;
 
                 const textToCopy = saved.map(s => {
@@ -670,8 +1154,7 @@
                 document.execCommand('copy');
                 document.body.removeChild(el);
 
-                // Feedback
-                const btn = document.getElementById('btn-copy');
+                const btn = document.getElementById(`btn-copy-${this.instanceId}`);
                 const originalContent = btn.innerHTML;
                 btn.innerHTML = `<i data-lucide="check" class="w-3 h-3"></i> Copied!`;
                 btn.classList.add('text-green-600', 'bg-green-50');
@@ -684,23 +1167,23 @@
                     btn.classList.add('text-blue-600', 'bg-blue-50');
                     lucide.createIcons();
                 }, 2000);
-            },
+            }
 
-            clearForm: function() {
-                document.getElementById('input-verb').value = '';
-                document.getElementById('input-content').value = '';
-                document.getElementById('input-context').value = '';
-                document.getElementById('input-depth').value = '';
+            clearForm() {
+                document.getElementById(`input-verb-${this.instanceId}`).value = '';
+                document.getElementById(`input-content-${this.instanceId}`).value = '';
+                document.getElementById(`input-context-${this.instanceId}`).value = '';
+                document.getElementById(`input-depth-${this.instanceId}`).value = '';
                 this.updatePreview();
-            },
+            }
 
-            clearAllSaved: function() {
+            clearAllSaved() {
                 if(confirm("Are you sure you want to delete all saved skills?")) {
-                    localStorage.removeItem('mySkills');
+                    localStorage.removeItem(this.storageKey);
                     this.loadSavedSkills();
                 }
             }
-        };
+        }
 
         // Initial Render
         document.addEventListener('DOMContentLoaded', () => {
