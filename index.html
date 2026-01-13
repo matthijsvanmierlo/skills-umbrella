@@ -78,62 +78,58 @@
     </div>
 
     <!-- VIEW 1: CURRICULUM MAP -->
-    <div id="view-map" class="w-full flex-grow">
-        <!-- Header -->
-        <header class="pt-10 pb-2 text-center px-4">
+    <div id="view-map" class="w-full flex-grow max-w-7xl mx-auto px-4 py-8">
+
+        <header class="mb-12 text-center md:text-left">
             <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
                 The Skills Umbrella
             </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            <p class="text-lg text-slate-600 leading-relaxed">
                 A flexible framework for cross-disciplinary growth.
             </p>
         </header>
 
-        <!-- Umbrella Visualization -->
-        <!-- Increased height and removed overflow-hidden to ensure handle is visible -->
-        <div class="relative w-full max-w-4xl mx-auto h-[450px] md:h-[550px] flex justify-center items-end mb-8">
+        <div class="grid lg:grid-cols-12 gap-12 items-start">
             
-            <!-- Umbrella SVG (Includes Handle now) -->
-            <div class="z-10 relative transform hover:-translate-y-2 transition-transform duration-500 ease-out">
-                <!-- Expanded ViewBox to 0 0 800 600 to allow space for the handle at the bottom -->
-                <svg viewBox="0 0 800 600" class="w-[340px] md:w-[600px] drop-shadow-2xl overflow-visible">
-                    
-                    <!-- The Handle (Drawn first so it's behind the canopy) -->
-                    <!-- Starts at 400,380 (the hub) and goes down, curving left -->
-                    <path d="M 400 380 L 400 520 Q 400 560 360 560 Q 340 560 340 540" 
-                          fill="none" 
-                          stroke="#1e293b" 
-                          stroke-width="12" 
-                          stroke-linecap="round" />
+            <!-- LEFT: Umbrella Visualization (Sticky on desktop) -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-start lg:sticky lg:top-24">
+                <div class="relative w-full max-w-[500px] h-[400px] flex justify-center items-end">
+                    <div class="z-10 relative transform hover:-translate-y-2 transition-transform duration-500 ease-out">
+                         <!-- Scaled down viewbox slightly for tighter fit -->
+                        <svg viewBox="0 0 800 600" class="w-full h-auto drop-shadow-2xl overflow-visible">
+                            <!-- Handle -->
+                            <path d="M 400 380 L 400 520 Q 400 560 360 560 Q 340 560 340 540"
+                                  fill="none" stroke="#1e293b" stroke-width="12" stroke-linecap="round" />
 
-                    <!-- Slice 1: Inquiry -->
-                    <path id="slice-1" d="M 400 380 L 100 380 A 300 300 0 0 1 250 120 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-cyan-400 hover:text-cyan-500" onclick="app.setActiveSlice(1)" />
-                    <text x="220" y="280" fill="white" class="font-bold text-sm md:text-lg pointer-events-none text-center shadow-black" text-anchor="middle" transform="rotate(-30 220 280)">Inquiry</text>
+                            <!-- Slice 1: Inquiry -->
+                            <path id="slice-1" d="M 400 380 L 100 380 A 300 300 0 0 1 250 120 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-cyan-400 hover:text-cyan-500" onclick="app.setActiveSlice(1)" />
+                            <text x="220" y="280" fill="white" class="font-bold text-lg pointer-events-none text-center shadow-black" text-anchor="middle" transform="rotate(-30 220 280)">Inquiry</text>
 
-                    <!-- Slice 2: Rhetoric -->
-                    <path id="slice-2" d="M 400 380 L 250 120 A 300 300 0 0 1 400 80 L 400 380 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-rose-400 hover:text-rose-500" onclick="app.setActiveSlice(2)" />
-                    <text x="340" y="200" fill="white" class="font-bold text-sm md:text-lg pointer-events-none" text-anchor="middle" transform="rotate(-12 340 200)">Rhetoric</text>
+                            <!-- Slice 2: Rhetoric -->
+                            <path id="slice-2" d="M 400 380 L 250 120 A 300 300 0 0 1 400 80 L 400 380 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-rose-400 hover:text-rose-500" onclick="app.setActiveSlice(2)" />
+                            <text x="340" y="200" fill="white" class="font-bold text-lg pointer-events-none" text-anchor="middle" transform="rotate(-12 340 200)">Rhetoric</text>
 
-                    <!-- Slice 3: Logic -->
-                    <path id="slice-3" d="M 400 380 L 400 80 A 300 300 0 0 1 550 120 L 400 380 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-amber-400 hover:text-amber-500" onclick="app.setActiveSlice(3)" />
-                    <text x="460" y="200" fill="white" class="font-bold text-sm md:text-lg pointer-events-none" text-anchor="middle" transform="rotate(12 460 200)">Logic</text>
+                            <!-- Slice 3: Logic -->
+                            <path id="slice-3" d="M 400 380 L 400 80 A 300 300 0 0 1 550 120 L 400 380 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-amber-400 hover:text-amber-500" onclick="app.setActiveSlice(3)" />
+                            <text x="460" y="200" fill="white" class="font-bold text-lg pointer-events-none" text-anchor="middle" transform="rotate(12 460 200)">Logic</text>
 
-                    <!-- Slice 4: Agency -->
-                    <path id="slice-4" d="M 400 380 L 550 120 A 300 300 0 0 1 700 380 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-violet-400 hover:text-violet-500" onclick="app.setActiveSlice(4)" />
-                    <text x="580" y="280" fill="white" class="font-bold text-sm md:text-lg pointer-events-none" text-anchor="middle" transform="rotate(30 580 280)">Agency</text>
+                            <!-- Slice 4: Agency -->
+                            <path id="slice-4" d="M 400 380 L 550 120 A 300 300 0 0 1 700 380 Z" fill="currentColor" class="cursor-pointer transition-colors duration-300 text-violet-400 hover:text-violet-500" onclick="app.setActiveSlice(4)" />
+                            <text x="580" y="280" fill="white" class="font-bold text-lg pointer-events-none" text-anchor="middle" transform="rotate(30 580 280)">Agency</text>
 
-                    <!-- The Ferrule/Hub Cap -->
-                    <circle cx="400" cy="80" r="8" class="fill-slate-700" />
-                    <!-- The Bottom Hub Cap -->
-                    <circle cx="400" cy="380" r="12" class="fill-slate-800" />
-                </svg>
+                            <!-- Hub Caps -->
+                            <circle cx="400" cy="80" r="8" class="fill-slate-700" />
+                            <circle cx="400" cy="380" r="12" class="fill-slate-800" />
+                        </svg>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Main Content Area -->
-        <main id="content-area" class="max-w-4xl mx-auto px-4 pb-20">
-            <!-- Dynamic Content -->
-        </main>
+            <!-- RIGHT: Content Area -->
+            <main id="content-area" class="lg:col-span-7 pb-20">
+                <!-- Dynamic Content -->
+            </main>
+        </div>
     </div>
 
     <!-- VIEW 2: DEPARTMENT SKILLS -->
@@ -159,7 +155,7 @@
         const departmentData = [
             {
                 id: 1,
-                title: "Inquiry & Information",
+                title: "Information & Inquiry",
                 focus: "Finding, filtering, and ethically using information.",
                 icon: "book-open",
                 color: "bg-cyan-500",
@@ -230,7 +226,7 @@
         const courseData = [
             {
                 id: 1,
-                title: "Inquiry & Information Matrix",
+                title: "Information & Inquiry Matrix",
                 trajectory: "From finding facts to constructing new knowledge.",
                 icon: "book-open",
                 color: "bg-cyan-500",
@@ -454,7 +450,7 @@
             },
             {
                 id: 2,
-                title: "Communication & Discourse",
+                title: "Rhetoric & Communication",
                 icon: "users",
                 color: "bg-rose-500",
                 textClass: "text-rose-500",
@@ -487,7 +483,7 @@
             },
             {
                 id: 3,
-                title: "Systems & Logic",
+                title: "Logic & Systems",
                 icon: "cpu",
                 color: "bg-amber-500",
                 textClass: "text-amber-500",
@@ -520,7 +516,7 @@
             },
             {
                 id: 4,
-                title: "Agency & Emotion",
+                title: "Agency & Self",
                 icon: "brain",
                 color: "bg-violet-500",
                 textClass: "text-violet-500",
@@ -820,111 +816,133 @@
                 if (!container) return;
 
                 if (!this.activeSlice) {
+                    // DEFAULT STATE: "How to Use" / Overview
                     container.innerHTML = `
-                        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-lg border border-slate-100 text-center animate-enter">
-                             <div class="flex justify-center mb-6">
-                                <div class="bg-slate-100 p-4 rounded-full">
-                                    <i data-lucide="compass" class="w-12 h-12 text-slate-400"></i>
+                        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100 animate-enter">
+                             <div class="mb-8 border-b border-slate-100 pb-8">
+                                <h2 class="text-2xl font-bold text-slate-900 mb-4">Welcome to the Workshop</h2>
+                                <p class="text-slate-600 leading-relaxed text-lg">
+                                    This framework serves as a starting point for inspiration and guidance related to skill building for academic courses. It is designed to bridge high-level departmental goals with specific classroom practices.
+                                </p>
+                             </div>
+
+                             <h3 class="font-bold text-slate-800 uppercase tracking-wider text-xs mb-6">How it works</h3>
+
+                             <div class="space-y-6">
+                                <div class="flex gap-4 items-start">
+                                    <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold shrink-0">1</div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 mb-1">Departments Align</h4>
+                                        <p class="text-slate-600 text-sm leading-relaxed">
+                                            Work to choose a high-level umbrella skill, or one related to the skills using the <strong>Department Skill Builder</strong>, for an overarching skill to focus on.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-4 items-start">
+                                    <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold shrink-0">2</div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 mb-1">Course Teams Create</h4>
+                                        <p class="text-slate-600 text-sm leading-relaxed">
+                                            Course teams will take that skill and create a related, specific skill for one of their courses at an appropriate grade, using the <strong>Course Skill Builder</strong>.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-4 items-start">
+                                    <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold shrink-0">3</div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 mb-1">Explore & Adapt</h4>
+                                        <p class="text-slate-600 text-sm leading-relaxed">
+                                            Click any section of the umbrella on the left to see examples of how these skills break down into essential questions, departmental goals, and course-level objectives.
+                                        </p>
+                                    </div>
                                 </div>
                              </div>
-                             <h2 class="text-2xl font-bold text-slate-800 mb-4">Explore the Curriculum</h2>
-                             <p class="text-slate-500 max-w-lg mx-auto mb-8">
-                               Click a colored section of the umbrella above to see how we scaffold skills from Grade 6 through 12.
-                             </p>
-                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
-                                ${categories.map(cat => `
-                                  <button onclick="app.setActiveSlice(${cat.id})" class="p-4 rounded-xl border transition-all ${cat.lightColor} border-transparent hover:border-slate-200 hover:-translate-y-1 cursor-pointer w-full text-left">
-                                    <div class="${cat.textColor} mb-2"><i data-lucide="${cat.icon}" class="w-6 h-6"></i></div>
-                                    <div class="font-bold text-slate-700 text-sm leading-tight">${cat.title}</div>
-                                  </button>
-                                `).join('')}
+
+                             <div class="mt-8 pt-8 border-t border-slate-100">
+                                <p class="text-slate-400 text-sm italic text-center">Select a colored slice on the left to begin exploring.</p>
                              </div>
                         </div>
                     `;
                 } else {
+                    // SELECTED STATE: Category Summary Modal
                     const activeCat = categories.find(c => c.id === this.activeSlice);
-                    const deptCat = departmentData.find(c => c.id === this.activeSlice);
-                    const courseCat = courseData.find(c => c.id === this.activeSlice);
 
                     container.innerHTML = `
-                        <div class="animate-enter">
-                            <!-- Header Area -->
-                            <div class="rounded-t-3xl p-8 md:p-10 ${activeCat.color} text-white shadow-lg relative overflow-hidden">
-                               <div class="absolute top-0 right-0 p-12 opacity-10 transform rotate-12 scale-150 pointer-events-none">
-                                 <i data-lucide="${activeCat.icon}" class="w-32 h-32"></i>
-                               </div>
-                               <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                  <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i data-lucide="${activeCat.icon}" class="w-8 h-8 text-white/90"></i>
-                                        <span class="uppercase tracking-widest text-xs font-bold text-white/80">Skill Bucket ${activeCat.id}</span>
+                        <div class="animate-enter bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden">
+                            <!-- Header -->
+                            <div class="p-8 md:p-10 ${activeCat.lightColor} border-b border-slate-100 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                                    <i data-lucide="${activeCat.icon}" class="w-48 h-48 ${activeCat.textClass}"></i>
+                                </div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="p-2 rounded-lg bg-white/50 backdrop-blur-sm ${activeCat.textClass} shadow-sm">
+                                            <i data-lucide="${activeCat.icon}" class="w-6 h-6"></i>
+                                        </div>
+                                        <span class="uppercase tracking-widest text-xs font-bold ${activeCat.textColor}">Category 0${activeCat.id}</span>
                                     </div>
-                                    <h2 class="text-3xl md:text-4xl font-bold mb-3">${activeCat.title}</h2>
-                                    <p class="text-white/90 text-lg font-medium leading-relaxed max-w-2xl">${activeCat.description}</p>
-                                  </div>
-                                  <button onclick="app.setActiveSlice(null)" class="md:hidden self-start bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm transition-colors">View All</button>
-                               </div>
-                            </div>
-
-                            <!-- Essential Questions -->
-                            <div class="bg-white border-x ${activeCat.borderColor} border-x-4 p-8 border-b border-slate-100">
-                                <h3 class="text-slate-400 font-bold uppercase tracking-wider text-xs mb-4 flex items-center gap-2"><i data-lucide="lightbulb" class="w-4 h-4"></i> Essential Questions</h3>
-                                <div class="grid md:grid-cols-3 gap-6">
-                                    ${activeCat.questions.map(q => `<div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-slate-700 font-medium italic">"${q}"</div>`).join('')}
+                                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">${activeCat.title}</h2>
+                                    <p class="text-slate-700 text-lg font-medium leading-relaxed max-w-2xl">${activeCat.description}</p>
                                 </div>
                             </div>
 
-                            <!-- Dual View: Dept and Course -->
-                            <div class="bg-white rounded-b-3xl shadow-lg border-t border-slate-100 p-8 md:p-10">
-                                <div class="grid md:grid-cols-2 gap-12">
-
-                                    <!-- Department Skills Column -->
-                                    <div>
-                                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                                            <div class="p-2 rounded-lg bg-slate-100 text-slate-600"><i data-lucide="users" class="w-5 h-5"></i></div>
-                                            <h3 class="text-xl font-bold text-slate-800">Department Skills</h3>
-                                        </div>
-                                        <div class="space-y-4">
-                                             ${deptCat ? deptCat.skills.map(skill => `
-                                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                                    <h4 class="font-bold text-slate-800 text-sm mb-1">${skill.name}</h4>
-                                                    <p class="text-slate-600 text-sm leading-relaxed">${skill.objective}</p>
-                                                </div>
-                                             `).join('') : '<p class="text-slate-400 italic">No department data.</p>'}
-                                        </div>
-                                    </div>
-
-                                    <!-- Course Skills Column -->
-                                    <div>
-                                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                                            <div class="p-2 rounded-lg bg-slate-100 text-slate-600"><i data-lucide="book-open" class="w-5 h-5"></i></div>
-                                            <h3 class="text-xl font-bold text-slate-800">Course Skills</h3>
-                                        </div>
-                                        <div class="mb-4">
-                                            <p class="text-sm font-medium text-slate-500"><strong>Trajectory:</strong> ${courseCat ? courseCat.trajectory : 'N/A'}</p>
-                                        </div>
-                                        <div class="space-y-4">
-                                            ${courseCat ? courseCat.skills.map(skill => `
-                                                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-start gap-2">
-                                                    <i data-lucide="check-circle" class="w-4 h-4 text-slate-400 mt-1 flex-shrink-0"></i>
-                                                    <h4 class="font-bold text-slate-800 text-sm leading-tight">${skill.name}</h4>
-                                                </div>
-                                            `).join('') : '<p class="text-slate-400 italic">No course data.</p>'}
-
-                                            <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100 text-center">
-                                                <p class="text-blue-800 text-xs mb-3 font-medium">Explore the full progression matrix (Level 1-3) for these skills.</p>
-                                                <button onclick="app.switchView('course'); app.setActiveCourseSlice(${courseCat ? courseCat.id : 1})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">
-                                                    View Detailed Matrix &rarr;
-                                                </button>
+                            <!-- Content -->
+                            <div class="p-8 md:p-10 space-y-8">
+                                <!-- Essential Questions -->
+                                <div>
+                                    <h3 class="text-slate-400 font-bold uppercase tracking-wider text-xs mb-4 flex items-center gap-2">
+                                        <i data-lucide="lightbulb" class="w-4 h-4"></i> Essential Questions
+                                    </h3>
+                                    <div class="grid md:grid-cols-3 gap-4">
+                                        ${activeCat.questions.map(q => `
+                                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-slate-700 font-medium italic text-sm">
+                                                "${q}"
                                             </div>
-                                        </div>
+                                        `).join('')}
                                     </div>
+                                </div>
 
+                                <!-- Skills Preview -->
+                                <div>
+                                    <h3 class="text-slate-400 font-bold uppercase tracking-wider text-xs mb-4 flex items-center gap-2">
+                                        <i data-lucide="layers" class="w-4 h-4"></i> Core Competencies
+                                    </h3>
+                                    <div class="space-y-3">
+                                        ${activeCat.skills.map(s => `
+                                            <div class="flex items-start gap-3 p-4 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors">
+                                                <div class="mt-1 ${activeCat.textClass}"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
+                                                <div>
+                                                    <h4 class="font-bold text-slate-800 text-sm mb-1">${s.name}</h4>
+                                                    <p class="text-slate-500 text-xs">Ex: ${s.levels[2]}</p>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                                    <button onclick="app.switchView('dept'); app.setActiveDeptSlice(${activeCat.id})" class="group p-4 rounded-xl border border-slate-200 hover:border-${activeCat.color.replace('bg-', '')} hover:ring-1 hover:ring-${activeCat.color.replace('bg-', '')} transition-all text-left">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="font-bold text-slate-800">Department View</span>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-400 group-hover:text-slate-800 transition-colors"></i>
+                                        </div>
+                                        <p class="text-slate-500 text-xs">See broad departmental objectives.</p>
+                                    </button>
+
+                                    <button onclick="app.switchView('course'); app.setActiveCourseSlice(${activeCat.id})" class="group p-4 rounded-xl border border-slate-200 hover:border-${activeCat.color.replace('bg-', '')} hover:ring-1 hover:ring-${activeCat.color.replace('bg-', '')} transition-all text-left">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="font-bold text-slate-800">Course View</span>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-400 group-hover:text-slate-800 transition-colors"></i>
+                                        </div>
+                                        <p class="text-slate-500 text-xs">See specific grade-level matrices.</p>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     `;
-                    lucide.createIcons();
                 }
                 lucide.createIcons();
             }
