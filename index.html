@@ -62,7 +62,7 @@
             
             <div class="flex bg-slate-100 p-1 rounded-lg overflow-x-auto">
                 <button onclick="app.switchView('map')" id="tab-map" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 bg-white shadow-sm text-slate-800 whitespace-nowrap">
-                    <i data-lucide="map" class="w-4 h-4"></i> Transferrable Skills
+                    <i data-lucide="map" class="w-4 h-4"></i> Overview
                 </button>
                 <button onclick="app.switchView('dept')" id="tab-dept" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap">
                     <i data-lucide="users" class="w-4 h-4"></i> Dept Skills
@@ -70,7 +70,7 @@
                 <button onclick="app.switchView('course')" id="tab-course" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap">
                     <i data-lucide="book-open" class="w-4 h-4"></i> Course Skills
                 </button>
-                <button onclick="app.switchView('builder')" id="tab-builder" class="px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap">
+                <button onclick="app.switchView('builder')" id="tab-builder" class="hidden px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap">
                     <i data-lucide="hammer" class="w-4 h-4"></i> Skill Builder
                 </button>
             </div>
@@ -577,11 +577,14 @@
 
                     const btn = document.getElementById(`tab-${v}`);
                     if(btn) {
+                        let cls = "px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 whitespace-nowrap ";
                         if (viewName === v) {
-                            btn.className = "px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 bg-white shadow-sm text-slate-800 whitespace-nowrap";
+                            cls += "bg-white shadow-sm text-slate-800";
                         } else {
-                            btn.className = "px-3 py-2 text-xs md:text-sm font-bold rounded-md transition-all flex items-center gap-2 text-slate-500 hover:text-slate-700 whitespace-nowrap";
+                            cls += "text-slate-500 hover:text-slate-700";
                         }
+                        if (v === 'builder') cls += " hidden";
+                        btn.className = cls;
                     }
                 });
 
@@ -621,65 +624,45 @@
                 const container = document.getElementById('view-dept');
                 if(!container) return;
 
-                // Initialize builder if not exists (append to end of view)
-                // We will render the content first, then append builder container
-
-                let contentHTML = '';
-
-                // 1. Umbrella/Navigation (Simplified Re-use or Duplicate)
-                // Using a grid layout for categories instead of the SVG to vary it, as requested "discrete part"
-                // Actually prompt says "information organized in a very logical way given the umbrella (have this graphic)"
-                // So I should include the umbrella.
-
                 const activeCat = departmentData.find(c => c.id === this.activeDeptSlice);
 
-                contentHTML += `
+                let contentHTML = `
                     <header class="text-center mb-12">
-                         <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Choosing Department Skill</h1>
+                         <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Department Skills</h1>
                          <p class="text-slate-600">Initial departmental brainstorming for a skill ALL teachers will focus on.</p>
                     </header>
 
-                    <div class="grid md:grid-cols-2 gap-8 mb-12 items-start">
-                        <!-- Left: Umbrella Visualization (Smaller) -->
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                             <div class="relative w-full h-[300px] flex justify-center items-end">
-                                <svg viewBox="0 0 800 600" class="w-full h-full">
-                                    <path d="M 400 380 L 400 520 Q 400 560 360 560 Q 340 560 340 540" fill="none" stroke="#1e293b" stroke-width="12" stroke-linecap="round" />
-                                    ${departmentData.map(cat => `
-                                        <path d="${this.getSlicePath(cat.id)}"
-                                              fill="currentColor"
-                                              class="cursor-pointer transition-all duration-300 ${this.activeDeptSlice === cat.id ? cat.textClass : 'text-slate-300 hover:text-slate-400'}"
-                                              onclick="app.setActiveDeptSlice(${cat.id})" />
-                                    `).join('')}
-                                    <circle cx="400" cy="80" r="8" class="fill-slate-700" />
-                                    <circle cx="400" cy="380" r="12" class="fill-slate-800" />
-                                </svg>
-                                <div class="absolute bottom-0 w-full text-center pointer-events-none">
-                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Select a Domain</p>
-                                </div>
-                             </div>
+                    <div class="grid md:grid-cols-12 gap-8 mb-12">
+                         <!-- Navigation (Sidebar style) -->
+                        <div class="md:col-span-3 space-y-2">
+                             ${departmentData.map(cat => `
+                                <button onclick="app.setActiveDeptSlice(${cat.id})" class="w-full text-left p-4 rounded-xl border transition-all flex items-center gap-3 ${this.activeDeptSlice === cat.id ? `bg-white border-slate-300 shadow-md ring-1 ring-slate-200` : 'bg-slate-50 border-transparent hover:bg-white hover:border-slate-200'}">
+                                    <div class="${cat.textColor}"><i data-lucide="${cat.icon}" class="w-5 h-5"></i></div>
+                                    <span class="font-bold text-sm ${this.activeDeptSlice === cat.id ? 'text-slate-900' : 'text-slate-500'}">${cat.title}</span>
+                                </button>
+                             `).join('')}
                         </div>
 
-                        <!-- Right: Details -->
-                        <div>
+                        <!-- Content -->
+                        <div class="md:col-span-9">
                              ${!activeCat ? `
-                                <div class="h-full flex flex-col items-center justify-center text-center p-8 bg-slate-100 rounded-3xl border border-slate-200 border-dashed min-h-[300px]">
-                                    <i data-lucide="mouse-pointer-2" class="w-12 h-12 text-slate-300 mb-4"></i>
-                                    <h3 class="text-xl font-bold text-slate-400">Select a domain to explore objectives</h3>
+                                <div class="h-full flex flex-col items-center justify-center text-center p-12 bg-white rounded-3xl border border-slate-200 border-dashed min-h-[400px]">
+                                    <div class="bg-slate-50 p-6 rounded-full mb-6">
+                                        <i data-lucide="layers" class="w-12 h-12 text-slate-300"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-slate-400">Select a Domain to explore objectives</h3>
                                 </div>
                              ` : `
-                                <div class="animate-enter">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="p-3 rounded-xl ${activeCat.lightColor} ${activeCat.textColor}">
-                                            <i data-lucide="${activeCat.icon}" class="w-6 h-6"></i>
-                                        </div>
-                                        <div>
+                                <div class="animate-enter bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                                     <div class="p-8 border-b border-slate-100 ${activeCat.lightColor}">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <i data-lucide="${activeCat.icon}" class="w-6 h-6 ${activeCat.textClass}"></i>
                                             <h2 class="text-2xl font-bold text-slate-900">${activeCat.title}</h2>
-                                            <p class="text-sm text-slate-500 font-medium">${activeCat.focus}</p>
                                         </div>
+                                        <p class="text-slate-600 font-medium">${activeCat.focus}</p>
                                     </div>
 
-                                    <div class="space-y-4">
+                                    <div class="p-8 space-y-4">
                                         ${activeCat.skills.map(skill => `
                                             <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:border-slate-300 transition-colors">
                                                 <h4 class="font-bold text-slate-800 mb-1">${skill.name}</h4>
@@ -860,8 +843,12 @@
                     `;
                 } else {
                     const activeCat = categories.find(c => c.id === this.activeSlice);
+                    const deptCat = departmentData.find(c => c.id === this.activeSlice);
+                    const courseCat = courseData.find(c => c.id === this.activeSlice);
+
                     container.innerHTML = `
                         <div class="animate-enter">
+                            <!-- Header Area -->
                             <div class="rounded-t-3xl p-8 md:p-10 ${activeCat.color} text-white shadow-lg relative overflow-hidden">
                                <div class="absolute top-0 right-0 p-12 opacity-10 transform rotate-12 scale-150 pointer-events-none">
                                  <i data-lucide="${activeCat.icon}" class="w-32 h-32"></i>
@@ -878,36 +865,63 @@
                                   <button onclick="app.setActiveSlice(null)" class="md:hidden self-start bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm transition-colors">View All</button>
                                </div>
                             </div>
+
+                            <!-- Essential Questions -->
                             <div class="bg-white border-x ${activeCat.borderColor} border-x-4 p-8 border-b border-slate-100">
                                 <h3 class="text-slate-400 font-bold uppercase tracking-wider text-xs mb-4 flex items-center gap-2"><i data-lucide="lightbulb" class="w-4 h-4"></i> Essential Questions</h3>
                                 <div class="grid md:grid-cols-3 gap-6">
                                     ${activeCat.questions.map(q => `<div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-slate-700 font-medium italic">"${q}"</div>`).join('')}
                                 </div>
                             </div>
+
+                            <!-- Dual View: Dept and Course -->
                             <div class="bg-white rounded-b-3xl shadow-lg border-t border-slate-100 p-8 md:p-10">
-                                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                                    <h3 class="text-xl font-bold text-slate-800">Growth Progression</h3>
-                                    <div class="flex bg-slate-100 p-1 rounded-lg self-start">
-                                        ${[1, 2, 3].map(level => `<button onclick="app.setActiveLevel(${level})" class="px-4 py-2 rounded-md text-sm font-bold transition-all ${this.activeLevel === level ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-400 hover:text-slate-600'}">${level === 1 ? "Level 1: Grades 6-8" : ""}${level === 2 ? "Level 2: Grades 9-10" : ""}${level === 3 ? "Level 3: Grades 11-12" : ""}</button>`).join('')}
-                                    </div>
-                                </div>
-                                <div class="space-y-6">
-                                    ${activeCat.skills.map(skill => `
-                                        <div class="group">
-                                             <div class="flex items-start gap-4">
-                                                <div class="mt-1 min-w-[24px] h-6 rounded-full flex items-center justify-center ${activeCat.lightColor} ${activeCat.textColor}"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
-                                                <div class="w-full">
-                                                    <h4 class="font-bold text-lg text-slate-800 mb-2 group-hover:text-slate-600 transition-colors">${skill.name}</h4>
-                                                    <div class="relative min-h-[60px]">
-                                                        ${skill.levels.map((desc, idx) => `<div class="transition-all duration-300 absolute top-0 left-0 w-full ${this.activeLevel === (idx + 1) ? 'opacity-100 translate-y-0 animate-fade' : 'opacity-0 translate-y-2 pointer-events-none hidden'}"><p class="text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-lg border border-slate-100">${desc}</p></div>`).join('')}
-                                                    </div>
-                                                </div>
-                                             </div>
+                                <div class="grid md:grid-cols-2 gap-12">
+
+                                    <!-- Department Skills Column -->
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                                            <div class="p-2 rounded-lg bg-slate-100 text-slate-600"><i data-lucide="users" class="w-5 h-5"></i></div>
+                                            <h3 class="text-xl font-bold text-slate-800">Department Skills</h3>
                                         </div>
-                                    `).join('')}
+                                        <div class="space-y-4">
+                                             ${deptCat ? deptCat.skills.map(skill => `
+                                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                                    <h4 class="font-bold text-slate-800 text-sm mb-1">${skill.name}</h4>
+                                                    <p class="text-slate-600 text-sm leading-relaxed">${skill.objective}</p>
+                                                </div>
+                                             `).join('') : '<p class="text-slate-400 italic">No department data.</p>'}
+                                        </div>
+                                    </div>
+
+                                    <!-- Course Skills Column -->
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                                            <div class="p-2 rounded-lg bg-slate-100 text-slate-600"><i data-lucide="book-open" class="w-5 h-5"></i></div>
+                                            <h3 class="text-xl font-bold text-slate-800">Course Skills</h3>
+                                        </div>
+                                        <div class="mb-4">
+                                            <p class="text-sm font-medium text-slate-500"><strong>Trajectory:</strong> ${courseCat ? courseCat.trajectory : 'N/A'}</p>
+                                        </div>
+                                        <div class="space-y-4">
+                                            ${courseCat ? courseCat.skills.map(skill => `
+                                                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-start gap-2">
+                                                    <i data-lucide="check-circle" class="w-4 h-4 text-slate-400 mt-1 flex-shrink-0"></i>
+                                                    <h4 class="font-bold text-slate-800 text-sm leading-tight">${skill.name}</h4>
+                                                </div>
+                                            `).join('') : '<p class="text-slate-400 italic">No course data.</p>'}
+
+                                            <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100 text-center">
+                                                <p class="text-blue-800 text-xs mb-3 font-medium">Explore the full progression matrix (Level 1-3) for these skills.</p>
+                                                <button onclick="app.switchView('course'); app.setActiveCourseSlice(${courseCat ? courseCat.id : 1})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">
+                                                    View Detailed Matrix &rarr;
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-                            <div class="text-center mt-8 text-slate-400 text-sm">* Level 1 (Foundations) • Level 2 (Analysis) • Level 3 (Mastery)</div>
                         </div>
                     `;
                     lucide.createIcons();
