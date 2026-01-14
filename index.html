@@ -564,7 +564,26 @@
             activeLevel: 1,
             view: 'map', // 'map', 'dept', 'course', 'builder'
 
+            transitionToDept: function(id) {
+                this.activeDeptSlice = id;
+                this.switchView('dept');
+                // Auto-select the target domain in the builder
+                if (window.builders['dept']) {
+                    window.builders['dept'].setBucket(id);
+                }
+            },
+
+            transitionToCourse: function(id) {
+                this.activeCourseSlice = id;
+                this.switchView('course');
+                // Auto-select the target domain in the builder
+                if (window.builders['course']) {
+                    window.builders['course'].setBucket(id);
+                }
+            },
+
             switchView: function(viewName) {
+                window.scrollTo(0, 0);
                 this.view = viewName;
                 const views = ['map', 'dept', 'course', 'builder'];
                 
@@ -677,7 +696,12 @@
                         </div>
                     </div>
 
-                    <div id="dept-builder-container" class="mt-16 pt-16 border-t border-slate-200">
+                    <div class="flex flex-col items-center justify-center gap-2 mt-12 text-slate-300 animate-bounce">
+                        <span class="text-xs font-bold uppercase tracking-widest">Scroll to Brainstorm</span>
+                        <i data-lucide="arrow-down" class="w-6 h-6"></i>
+                    </div>
+
+                    <div id="dept-builder-container" class="mt-4 pt-12 border-t border-slate-200">
                         <!-- Builder will be injected here -->
                     </div>
                 `;
@@ -768,7 +792,12 @@
                         </div>
                     </div>
 
-                    <div id="course-builder-container" class="mt-16 pt-16 border-t border-slate-200">
+                    <div class="flex flex-col items-center justify-center gap-2 mt-12 text-slate-300 animate-bounce">
+                        <span class="text-xs font-bold uppercase tracking-widest">Scroll to Brainstorm</span>
+                        <i data-lucide="arrow-down" class="w-6 h-6"></i>
+                    </div>
+
+                    <div id="course-builder-container" class="mt-4 pt-12 border-t border-slate-200">
                         <!-- Builder injected here -->
                     </div>
                 `;
@@ -930,7 +959,7 @@
 
                                 <!-- Actions -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
-                                    <button onclick="app.switchView('dept'); app.setActiveDeptSlice(${activeCat.id})" class="group p-4 rounded-xl border border-slate-200 hover:border-${activeCat.color.replace('bg-', '')} hover:ring-1 hover:ring-${activeCat.color.replace('bg-', '')} transition-all text-left">
+                                    <button onclick="app.transitionToDept(${activeCat.id})" class="group p-4 rounded-xl border border-slate-200 hover:border-${activeCat.color.replace('bg-', '')} hover:ring-1 hover:ring-${activeCat.color.replace('bg-', '')} transition-all text-left">
                                         <div class="flex items-center justify-between mb-2">
                                             <span class="font-bold text-slate-800">Department View</span>
                                             <i data-lucide="arrow-right" class="w-4 h-4 text-slate-400 group-hover:text-slate-800 transition-colors"></i>
@@ -938,7 +967,7 @@
                                         <p class="text-slate-500 text-xs">See broad departmental objectives.</p>
                                     </button>
 
-                                    <button onclick="app.switchView('course'); app.setActiveCourseSlice(${activeCat.id})" class="group p-4 rounded-xl border border-slate-200 hover:border-${activeCat.color.replace('bg-', '')} hover:ring-1 hover:ring-${activeCat.color.replace('bg-', '')} transition-all text-left">
+                                    <button onclick="app.transitionToCourse(${activeCat.id})" class="group p-4 rounded-xl border border-slate-200 hover:border-${activeCat.color.replace('bg-', '')} hover:ring-1 hover:ring-${activeCat.color.replace('bg-', '')} transition-all text-left">
                                         <div class="flex items-center justify-between mb-2">
                                             <span class="font-bold text-slate-800">Course View</span>
                                             <i data-lucide="arrow-right" class="w-4 h-4 text-slate-400 group-hover:text-slate-800 transition-colors"></i>
