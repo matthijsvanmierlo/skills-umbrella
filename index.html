@@ -975,6 +975,7 @@
                 this.containerId = containerId;
                 this.isSimplified = isSimplified;
                 this.currentBucket = 1;
+                this.currentSubSkill = null;
 
                 // Register in global scope for onclick handlers
                 if (!window.builders) window.builders = {};
@@ -1009,6 +1010,9 @@
                                         </button>
                                    `).join('')}
                                 </div>
+
+                                <!-- New Sub-skill Container -->
+                                <div id="sub-skill-container-${this.instanceId}"></div>
                             </div>
 
                             ${this.renderField('verb', 'Step 1: Action Verb', 'What will students do?', 'e.g., Analyze, Evaluate...', 'blue', 'Students will be able to <span class="text-blue-500 font-bold">evaluate</span>...')}
@@ -1058,7 +1062,7 @@
 
                                     <div id="saved-list-${this.instanceId}" class="space-y-3 max-h-[500px] overflow-y-auto pr-2"></div>
                                     <div class="mt-4 pt-4 border-t border-slate-100 text-center space-y-3">
-                                        <button onclick="builders['${this.instanceId}'].submitSkills()" class="w-full py-3 px-4 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
+                                        <button onclick="builders['${this.instanceId}'].submitSkills()" class="hidden w-full py-3 px-4 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
                                             <i data-lucide="send" class="w-4 h-4"></i> Submit Skills
                                         </button>
                                         <button onclick="builders['${this.instanceId}'].clearAllSaved()" class="text-xs text-red-400 hover:text-red-600 font-medium">Clear All Saved Data</button>
@@ -1071,6 +1075,7 @@
                 `;
 
                 this.updateBucketStyles();
+                this.renderSubSkills();
                 lucide.createIcons();
             }
 
@@ -1089,9 +1094,48 @@
             }
 
             setBucket(id) {
-                this.currentBucket = id;
+                if (this.currentBucket !== id) {
+                    this.currentBucket = id;
+                    this.currentSubSkill = null;
+                }
                 this.updateBucketStyles();
+                this.renderSubSkills();
                 this.updatePreview(); 
+            }
+
+            setSubSkill(name) {
+                this.currentSubSkill = name;
+                this.renderSubSkills();
+            }
+
+            renderSubSkills() {
+                const container = document.getElementById(`sub-skill-container-${this.instanceId}`);
+                if (!container) return;
+
+                let data = [];
+                if (this.instanceId === 'dept' && typeof departmentData !== 'undefined') data = departmentData;
+                else if (this.instanceId === 'course' && typeof courseData !== 'undefined') data = courseData;
+                else if (typeof categories !== 'undefined') data = categories;
+
+                const category = data.find(c => c.id === this.currentBucket);
+                if (!category || !category.skills) {
+                    container.innerHTML = '';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2 mt-4 pt-4 border-t border-slate-100">Target Skill</h3>
+                    <div class="grid grid-cols-1 gap-2">
+                        ${category.skills.map(skill => `
+                            <button onclick="builders['${this.instanceId}'].setSubSkill('${skill.name.replace(/'/g, "\\'")}')"
+                                class="p-2 rounded-lg border text-xs font-bold transition-all text-left flex items-start gap-2 ${this.currentSubSkill === skill.name ? 'bg-slate-700 text-white border-slate-700 shadow-md' : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-white'}">
+                                <div class="mt-0.5">${this.currentSubSkill === skill.name ? '<i data-lucide="check-circle" class="w-3 h-3 text-green-400"></i>' : '<i data-lucide="circle" class="w-3 h-3 text-slate-300"></i>'}</div>
+                                <span class="leading-tight">${skill.name}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+                lucide.createIcons();
             }
 
             updateBucketStyles() {
@@ -1145,6 +1189,7 @@
                 const skill = {
                     id: Date.now(),
                     bucketId: this.currentBucket,
+                    subSkill: this.currentSubSkill,
                     text: `${v} ${c} ${ctx} ${d}.`,
                     timestamp: new Date().toLocaleDateString()
                 };
@@ -1177,7 +1222,10 @@
                             <button onclick="builders['${this.instanceId}'].deleteSkill(${s.id})" class="absolute top-2 right-2 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
-                            <span class="text-[10px] font-bold uppercase tracking-widest ${cat.textColor} mb-1 block">${cat.title}</span>
+                            <div class="mb-2">
+                                <span class="text-[10px] font-bold uppercase tracking-widest ${cat.textColor} block">${cat.title}</span>
+                                ${s.subSkill ? `<span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mt-1 flex items-center gap-1"><i data-lucide="corner-down-right" class="w-3 h-3"></i> ${s.subSkill}</span>` : ''}
+                            </div>
                             <p class="text-slate-700 font-medium text-sm leading-relaxed">${s.text}</p>
                             <span class="text-[10px] text-slate-400 mt-2 block">${s.timestamp}</span>
                         </div>
@@ -1230,6 +1278,8 @@
                 document.getElementById(`input-content-${this.instanceId}`).value = '';
                 document.getElementById(`input-context-${this.instanceId}`).value = '';
                 document.getElementById(`input-depth-${this.instanceId}`).value = '';
+                this.currentSubSkill = null;
+                this.renderSubSkills();
                 this.updatePreview();
             }
 
