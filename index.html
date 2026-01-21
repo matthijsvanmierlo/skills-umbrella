@@ -54,6 +54,45 @@
             background-color: rgba(15, 23, 42, 0.5);
             backdrop-filter: blur(4px);
         }
+
+        /* FAB Styles */
+        .fab-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 50;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 9999px;
+            background-color: #0f172a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, background-color 0.2s;
+            cursor: pointer;
+        }
+        .fab-button:hover {
+            transform: scale(1.1);
+            background-color: #1e293b;
+        }
+        .fab-label {
+            position: absolute;
+            right: 4rem;
+            background-color: #1e293b;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .fab-button:hover .fab-label {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 selection:bg-slate-200 min-h-screen flex flex-col">
@@ -155,9 +194,94 @@
         <!-- Builder is injected here via JS -->
     </div>
 
+    <!-- Floating Action Button for Instructions -->
+    <button id="fab-instructions" onclick="toggleInstructions()" class="hidden fab-button group">
+        <i data-lucide="info" class="w-6 h-6"></i>
+        <span class="fab-label">Instructions</span>
+    </button>
+
+    <!-- Instructions Modal -->
+    <div id="instructions-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 modal-backdrop animate-fade">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col animate-enter relative">
+            <button onclick="toggleInstructions()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div id="instructions-content" class="p-6 md:p-8">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
 
     <script>
         window.builders = {}; // Initialize global registry for SkillBuilder instances
+
+        const instructionsData = {
+            dept: {
+                title: "Department Skills Guide",
+                color: "bg-slate-900",
+                steps: [
+                    { icon: "book-open", title: "Explore Categories", text: "Teachers (independently) look through the big categories (e.g. Information & Inquiry) using the tabs above." },
+                    { icon: "mouse-pointer", title: "Select Interest", text: "Choose a sub-header (e.g. Strategic Research) that is of interest to you." },
+                    { icon: "hammer", title: "Brainstorm Skills", text: "Use the Skill Builder below to draft 3-5 skills using sub-headers and descriptions as a starting point." },
+                    { icon: "target", title: "Set Targets", text: "Select the target domain and target sub-domain in the interface." },
+                    { icon: "save", title: "Save & Copy", text: "Draft your skill and click “Save Skill” so it saves in your browser. Make sure to copy these elsewhere!" }
+                ]
+            },
+            course: {
+                title: "Course Skills Guide",
+                color: "bg-slate-900",
+                steps: [
+                    { icon: "users", title: "Dept Consensus", text: "Use the skill that the department decided on (based on group consensus)." },
+                    { icon: "map", title: "Target Domain", text: "Look for the target domain and look at the sub-domains." },
+                    { icon: "bar-chart", title: "Explore Levels", text: "Explore the levels within that area to see the progression." },
+                    { icon: "edit-3", title: "Create Skill", text: "Use the Skill Builder to create a focused, class and grade appropriate skill." },
+                    { icon: "save", title: "Save & Copy", text: "Save the Skill in the Skill Builder, and make sure to copy these elsewhere!" }
+                ]
+            }
+        };
+
+        function toggleInstructions() {
+            const modal = document.getElementById('instructions-modal');
+            const content = document.getElementById('instructions-content');
+
+            if (modal.classList.contains('hidden')) {
+                // Open
+                const data = instructionsData[app.view];
+                if (!data) return; // Should not happen if button is hidden
+
+                content.innerHTML = `
+                    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                        <div class="p-3 bg-slate-100 rounded-xl text-slate-700">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-900">${data.title}</h2>
+                    </div>
+                    <div class="space-y-6">
+                        ${data.steps.map((step, index) => `
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full ${data.color} text-white flex items-center justify-center font-bold shadow-sm relative z-10">
+                                    <i data-lucide="${step.icon}" class="w-5 h-5"></i>
+                                </div>
+                                <div class="pb-2">
+                                    <h3 class="font-bold text-slate-800 text-lg mb-1">${step.title}</h3>
+                                    <p class="text-slate-600 leading-relaxed text-sm">${step.text}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex justify-center">
+                        <button onclick="toggleInstructions()" class="bg-slate-900 text-white px-6 py-2 rounded-lg font-bold hover:bg-slate-800 transition-colors">
+                            Got it
+                        </button>
+                    </div>
+                `;
+                lucide.createIcons();
+                modal.classList.remove('hidden');
+            } else {
+                // Close
+                modal.classList.add('hidden');
+            }
+        }
 
         // --- DATA & CONFIG ---
         const departmentData = [
@@ -610,6 +734,16 @@
                         btn.className = cls;
                     }
                 });
+
+                // Toggle FAB
+                const fab = document.getElementById('fab-instructions');
+                if(fab) {
+                    if(viewName === 'dept' || viewName === 'course') {
+                        fab.classList.remove('hidden');
+                    } else {
+                        fab.classList.add('hidden');
+                    }
+                }
 
                 // Init builders if needed
                 if(viewName === 'builder' && !window.builders['main']) {
